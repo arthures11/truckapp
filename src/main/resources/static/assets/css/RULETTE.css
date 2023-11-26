@@ -1,0 +1,556 @@
+.gridy {
+  display: grid;
+  grid-template-columns: 25% 25% 12.5% 12.5% 12.5% 12.5%;
+  grid-auto-flow: dense;
+  grid-template-rows: 7.14% 7.14% 7.4% 7.14% 7.14% 7.14% 7.14% 7.14% 7.14% 7.14% 7.14% 7.14% 7.14% 7.14%;
+  grid-auto-columns: 1fr;
+  gap: normal;
+  border: 1px solid black;
+  grid-template-areas: "puste1 puste1 x0 x0 x0 puste2" "x1-18 x1-12 x1 x2 x3 s1" "x1-18 x1-12 x4 x5 x6 s2" "nieparzyste x1-12 x7 x8 x9 s3" "nieparzyste x1-12 x10 x11 x12 s4" "red x13-24 x13 x14 x15 s5" "red x13-24 x16 x17 x18 s6" "black x13-24 x19 x20 x21 s7" "black x13-24 x22 x23 x24 s8" "parzyste x25-36 x25 x26 x27 s9" "parzyste x25-36 x28 x29 x30 s10" "x19-36 x25-36 x31 x32 x33 s11" "x19-36 x25-36 x34 x35 x36 s12" "puste3 puste3 s13 s14 s15 puste4";
+  background-color: darkseagreen;
+}
+
+.disabled {
+  pointer-events: none;
+}
+
+.gridy > div {
+  border: 1px solid gray;
+  padding: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gridy > div:hover {
+  background-color: yellowgreen;
+}
+
+.gridy > div:active {
+  background-color: red;
+}
+
+.puste1 {
+  grid-area: puste1;
+  background-color: white;
+}
+
+.x0 {
+  grid-area: x0;
+}
+
+.puste2 {
+  grid-area: puste2;
+  background-color: white;
+}
+
+.x1-12 {
+  grid-area: x1-12;
+}
+
+.x1-18 {
+  grid-area: x1-18;
+}
+
+.nieparzyste {
+  grid-area: nieparzyste;
+}
+
+.x1 {
+  grid-area: x1;
+  background-color: indianred;
+}
+
+.x2 {
+  grid-area: x2;
+  background-color: black;
+  color: white;
+}
+
+.x3 {
+  grid-area: x3;
+  background-color: indianred;
+}
+
+.x4 {
+  grid-area: x4;
+  background-color: black;
+  color: white;
+}
+
+.x5 {
+  grid-area: x5;
+  background-color: indianred;
+}
+
+.x6 {
+  grid-area: x6;
+  background-color: black;
+  color: white;
+}
+
+.x7 {
+  grid-area: x7;
+  background-color: indianred;
+}
+
+.x8 {
+  grid-area: x8;
+  background-color: black;
+  color: white;
+}
+
+.x9 {
+  grid-area: x9;
+  background-color: indianred;
+}
+
+.x10 {
+  grid-area: x10;
+  background-color: black;
+  color: white;
+}
+
+.x11 {
+  grid-area: x11;
+  background-color: black;
+  color: white;
+}
+
+.x12 {
+  grid-area: x12;
+  background-color: indianred;
+}
+
+.s1 {
+  grid-area: s1;
+}
+
+.s2 {
+  grid-area: s2;
+}
+
+.s3 {
+  grid-area: s3;
+}
+
+.s4 {
+  grid-area: s4;
+}
+
+.red {
+  grid-area: red;
+  background-color: indianred;
+}
+
+.black {
+  grid-area: black;
+  background-color: black;
+  color: white;
+}
+
+.x13-24 {
+  grid-area: x13-24;
+}
+
+.parzyste {
+  grid-area: parzyste;
+}
+
+.x19-36 {
+  grid-area: x19-36;
+}
+
+.puste3 {
+  grid-area: puste3;
+  background-color: white;
+}
+
+.puste4 {
+  grid-area: puste4;
+  background-color: white;
+}
+
+.s5 {
+  grid-area: s5;
+}
+
+.s6 {
+  grid-area: s6;
+}
+
+.s7 {
+  grid-area: s7;
+}
+
+.s8 {
+  grid-area: s8;
+}
+
+.s9 {
+  grid-area: s9;
+}
+
+.s10 {
+  grid-area: s10;
+}
+
+.s11 {
+  grid-area: s11;
+}
+
+.s12 {
+  grid-area: s12;
+}
+
+.x13 {
+  grid-area: x13;
+  background-color: black;
+  color: white;
+}
+
+.x14 {
+  grid-area: x14;
+  background-color: indianred;
+}
+
+.x15 {
+  grid-area: x15;
+  background-color: black;
+  color: white;
+}
+
+.x16 {
+  grid-area: x16;
+  background-color: indianred;
+}
+
+.x17 {
+  grid-area: x17;
+  background-color: black;
+  color: white;
+}
+
+.x18 {
+  grid-area: x18;
+  background-color: indianred;
+}
+
+.x19 {
+  grid-area: x19;
+  background-color: indianred;
+}
+
+.x20 {
+  grid-area: x20;
+  background-color: black;
+  color: white;
+}
+
+.x21 {
+  grid-area: x21;
+  background-color: indianred;
+}
+
+.x22 {
+  grid-area: x22;
+  background-color: black;
+  color: white;
+}
+
+.x23 {
+  grid-area: x23;
+  background-color: indianred;
+}
+
+.x24 {
+  grid-area: x24;
+  background-color: black;
+  color: white;
+}
+
+.x25 {
+  grid-area: x25;
+  background-color: indianred;
+}
+
+.x26 {
+  grid-area: x26;
+  background-color: black;
+  color: white;
+}
+
+.x27 {
+  grid-area: x27;
+  background-color: indianred;
+}
+
+.x28 {
+  grid-area: x28;
+  background-color: black;
+  color: white;
+}
+
+.x29 {
+  grid-area: x29;
+  background-color: black;
+  color: white;
+}
+
+.x30 {
+  grid-area: x30;
+  background-color: indianred;
+}
+
+.x31 {
+  grid-area: x31;
+  background-color: black;
+  color: white;
+}
+
+.x32 {
+  grid-area: x32;
+  background-color: indianred;
+}
+
+.x33 {
+  grid-area: x33;
+  background-color: black;
+  color: white;
+}
+
+.x34 {
+  grid-area: x34;
+  background-color: indianred;
+}
+
+.x35 {
+  grid-area: x35;
+  background-color: black;
+  color: white;
+}
+
+.x36 {
+  grid-area: x36;
+  background-color: indianred;
+}
+
+.s13 {
+  grid-area: s13;
+}
+
+.s14 {
+  grid-area: s14;
+}
+
+.s15 {
+  grid-area: s15;
+}
+
+.x25-36 {
+  grid-area: x25-36;
+}
+
+.info {
+  width: 45%;
+  margin-right: 100px;
+  word-wrap: break-word;
+  font-size: 20pt;
+}
+
+.obsluga {
+  margin-left: 1px;
+  margin-top: 10px;
+  position: fixed;
+  bottom: 17%;
+  left: 0.2%;
+  font-size: 15pt;
+}
+
+#btn1 {
+  font-size: 15pt;
+  bottom: 7%;
+  left: 1%;
+  position: fixed;
+  border-radius: 50%;
+  background-color: #4CAF50;
+  border: none;
+  color: black;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+#btn1:hover {
+  background-color: blue;
+  color: white;
+}
+
+#win_lose {
+  bottom: 10%;
+  left: 11%;
+  position: fixed;
+}
+
+#liczba {
+  bottom: 5%;
+  left: 11%;
+  position: fixed;
+}
+
+#wheel {
+  position: fixed;
+  bottom: 10%;
+  right: 10%;
+  height: auto;
+  width: auto;
+  max-width: 4%;
+  max-height: 10%;
+}
+
+#ball {
+  position: fixed;
+  bottom: 9%;
+  right: 10%;
+  height: auto;
+  width: auto;
+  max-width: 4%;
+  max-height: 10%;
+}
+
+@media (max-device-width: 800px) {
+  #win_lose {
+    bottom: 18%;
+    left: 50%;
+    position: fixed;
+  }
+}
+
+@media (max-device-width: 800px) {
+  #liczba {
+    bottom: 14%;
+    left: 44%;
+    position: fixed;
+  }
+}
+
+@media (max-device-width: 800px) {
+  #wheel {
+    bottom: 22%;
+    right: 10%;
+    height: auto;
+    width: auto;
+    max-width: 8%;
+    max-height: 5%;
+  }
+}
+
+@media (max-device-width: 800px) {
+  #ball {
+    position: fixed;
+    bottom: 21.5%;
+    right: 10%;
+    height: auto;
+    width: auto;
+    max-width: 8%;
+    max-height: 5%;
+  }
+}
+
+@media (max-device-width: 800px) {
+  .obsluga {
+    margin-left: 500px;
+    position: fixed;
+    bottom: 5%;
+    right: 10%;
+    font-size: 35pt;
+  }
+}
+
+@media (max-device-width: 800px) {
+  #zaklad {
+    height: 100px;
+    font-size: 20pt;
+  }
+}
+
+@media (max-device-width: 800px) {
+  .info {
+    position: fixed;
+    bottom: 5%;
+    right: 41%;
+    font-size: 25pt;
+  }
+}
+
+@media (max-device-width: 800px) {
+  #menu {
+    width: 100%;
+    height: 50%;
+    font-size: 45pt;
+  }
+}
+
+@media (max-device-width: 800px) {
+  button {
+    width: 100%;
+    height: 300%;
+  }
+}
+
+@media (max-device-width: 800px) {
+  .gridy {
+    height: 80%;
+  }
+}
+
+@media (max-device-width: 800px) {
+  #btn1 {
+    position: fixed;
+    width: 20%;
+    height: 7%;
+    bottom: 15%;
+    left: 77.5%;
+    border-radius: 50%;
+    background-color: #4CAF50;
+    border: none;
+    color: black;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 36px;
+    margin: 4px 2px;
+  }
+}
+
+.result {
+  font-size: 72px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.win {
+  color: green;
+}
+
+.lose {
+  color: red;
+}
+
+.img-pro {
+  position: relative;
+  z-index: 1;
+}
+
+.img-pro {
+  z-index: 2;
+  transform: scale(1.0);
+}
+

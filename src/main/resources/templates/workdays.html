@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Workplans</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web:400,600,700">
+    <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/fonts/material-icons.min.css">
+    <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
+    <link rel="stylesheet" href="assets/css/Button-Change-Text-on-Hover.css">
+    <link rel="stylesheet" href="assets/css/Chat.css">
+    <link rel="stylesheet" href="assets/css/Color-Contact-List.css">
+    <link rel="stylesheet" href="assets/css/Contact-Form-v2-Modal--Full-with-Google-Map.css">
+    <link rel="stylesheet" href="assets/css/Custom-File-Upload.css">
+    <link rel="stylesheet" href="assets/css/Data-Table-styles.css">
+    <link rel="stylesheet" href="assets/css/Data-Table.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/css/theme.bootstrap_4.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+    <link rel="stylesheet" href="assets/css/info-box.css">
+    <link rel="stylesheet" href="assets/css/Ludens---1-Dark-mode-Index-Table-with-Search-Filters.css">
+    <link rel="stylesheet" href="assets/css/Multi-Select-Dropdown-by-Jigar-Mistry.css">
+    <link rel="stylesheet" href="assets/css/Navbar-With-Button-icons.css">
+    <link rel="stylesheet" href="assets/css/RULETTE.css">
+    <link rel="stylesheet" href="assets/css/Select2-JS-Plugin.css">
+    <link rel="stylesheet" href="assets/css/workday.css">
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background: var(--bs-dark);">
+            <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="chat">
+                    <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-truck-moving"></i></div>
+                    <div class="sidebar-brand-text mx-3"><span>trucky</span></div>
+                </a>
+                <hr class="sidebar-divider my-0">
+                <ul class="navbar-nav text-light" id="accordionSidebar">
+                    <li class="nav-item">
+                        <a class="nav-link" href="profile"><i class="fas fa-user"></i><span>Profile</span></a>
+                        <div th:if="${#authorization.expression('hasAnyRole(''ADMIN'', ''MANAGER'')')}">
+                            <a class="nav-link" href="drivers"><i class="fas fa-users"></i><span>Drivers</span></a>
+                            <a class="nav-link" href="trucks"><i class="fas fa-shuttle-van"></i><span>Trucks</span></a>
+                            <a class="nav-link" href="delivery"><i class="fas fa-hands-helping"></i><span>Delivery</span></a>
+                            <a class="nav-link" href="schedule"><i class="material-icons">schedule</i><span>Schedule</span></a>
+                            <a class="nav-link active" href="workdays"><i class="fas fa-paper-plane"></i><span>Workdays</span></a>
+                            <a class="nav-link" href="raports"><i class="fas fa-th-list"></i><span>Raports</span></a>
+                            <a class="nav-link" href="track"><i class="fab fa-earlybirds"></i><span>Tracking</span></a>
+                            <a class="nav-link" href="approve"><i class="far fa-save"></i><span>Approvals</span></a>
+                        </div>
+                        <a class="nav-link" href="chat"><i class="far fa-comments"></i><span>Chat</span></a>
+                    </li>
+
+                </ul>
+                <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
+            </div>
+        </nav>
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+                        <ul class="navbar-nav flex-nowrap ms-auto">
+                            <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fas fa-search"></i></a>
+                                <div class="dropdown-menu dropdown-menu-end p-3 animated--grow-in" aria-labelledby="searchDropdown">
+                                    <form class="me-auto navbar-search w-100">
+                                        <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
+                                            <div class="input-group-append"><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </li>
+                            <div th:if="${#authorization.expression('hasAnyRole(''ADMIN'', ''MANAGER'')')}">
+                                <li class="authenticated nav-item dropdown no-arrow mx-1" style="display:none">
+                                    <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span id="alertamount" class="badge bg-danger badge-counter">3+</span><i class="fas fa-bell fa-fw"></i></a>
+                                        <div style="height: 650px; overflow: auto;" id="notifikacje" class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
+                                            <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item text-center small text-gray-500" onclick="deleteAlerts()" href="#">delete all notifs</a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </div>
+                            <li class="nav-item dropdown no-arrow mx-1">
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"></a>
+                                    <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
+                                        <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
+                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar4.jpeg">
+                                                <div class="bg-success status-indicator"></div>
+                                            </div>
+                                            <div class="fw-bold">
+                                                <div class="text-truncate"><span>Hi there! I am wondering if you can help me with a problem I've been having.</span></div>
+                                                <p class="small text-gray-500 mb-0">Emily Fowler - 58m</p>
+                                            </div>
+                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
+                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar2.jpeg">
+                                                <div class="status-indicator"></div>
+                                            </div>
+                                            <div class="fw-bold">
+                                                <div class="text-truncate"><span>I have the photos that you ordered last month!</span></div>
+                                                <p class="small text-gray-500 mb-0">Jae Chun - 1d</p>
+                                            </div>
+                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
+                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar3.jpeg">
+                                                <div class="bg-warning status-indicator"></div>
+                                            </div>
+                                            <div class="fw-bold">
+                                                <div class="text-truncate"><span>Last month's report looks great, I am very happy with the progress so far, keep up the good work!</span></div>
+                                                <p class="small text-gray-500 mb-0">Morgan Alvarez - 2d</p>
+                                            </div>
+                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
+                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar5.jpeg">
+                                                <div class="bg-success status-indicator"></div>
+                                            </div>
+                                            <div class="fw-bold">
+                                                <div class="text-truncate"><span>Am I a good boy? The reason I ask is because someone told me that people say this to all dogs, even if they aren't good...</span></div>
+                                                <p class="small text-gray-500 mb-0">Chicken the Dog · 2w</p>
+                                            </div>
+                                        </a><a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                    </div>
+                                </div>
+                                <div class="shadow dropdown-list dropdown-menu dropdown-menu-end" aria-labelledby="alertsDropdown"></div>
+                            </li>
+                            <div class="d-none d-sm-block topbar-divider"></div>
+                            <li class="nav-item dropdown no-arrow">
+                                <div class="container"><div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span id="user" class="d-none d-lg-inline me-2 text-gray-600 small"></span><img id="avatar" class="border rounded-circle img-profile" src="assets/img/avatars/avatar1.jpeg"></a>
+                                    <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
+                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+                                    </div>
+                                </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                <div class="container-fluid">
+                    <h3 class="text-dark mb-1">Workday settings<br></h3>
+                    <h3 class="text-dark mb-1"><small class="form-text" style="font-size: 19.5px;">select the driver you want to setup a plan for or click on <i class="fa fa-pencil ml-auto"></i> to edit the driver's workdays.</small><br></h3>
+                </div>
+                <div class="row">
+                    <div class="col"><div class="container mt-5">
+
+          <div class="row d-flex justify-content-center ">
+
+            <div class="col-md-6">
+
+                <div id="userlist" class="card">
+                  
+                  <div class="input-box">
+                    <input type="text" class="form-control">
+                    <i class="fa fa-search"></i>                    
+                  </div>
+
+
+
+                </div>
+              
+            </div>
+            
+          </div>
+          
+        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="modal fade centro" role="dialog" tabindex="-1" id="modal">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h6 class="txtsGrises">REGISTER </h6><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h2 class="titulos">Register form: </h2>
+                                                <p class="text-start margenesEspacio">Write your information to be part of our community and have access to the system. </p>
+                                                <div class="col padMar"><input type="text" class="margenesEspacio inputLargo" placeholder="Name"><input type="text" class="margenesEspacio inputLargo" placeholder="Lastname"><input type="text" class="margenesEspacio inputLargo" placeholder="Email "><input type="password" class="margenesEspacio inputLargo" placeholder="Create a password"><input type="password" class="margenesEspacio inputLargo" placeholder="Confirm your password"><input type="tel" class="margenesEspacio inputLargo" placeholder="Mobile phone"></div>
+                                            </div>
+                                            <div class="modal-footer"><button class="btn btn-primary btn-Oscuro" type="button">REGISTER </button></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="bg-white sticky-footer">
+                <div class="container my-auto">
+                    <div class="text-center my-auto copyright"><span>Copyright © Bryja 2023</span></div>
+                </div>
+            </footer>
+        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+    </div>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="assets/js/Select2-JS-Plugin-1.js"></script>
+    <script src="assets/js/Select2-JS-Plugin.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/jquery.tablesorter.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-filter.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-storage.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="assets/js/theme.js"></script>
+    <script src="assets/js/userdetails.js"></script>
+</body>
+
+
+
+<script>
+
+var ob2;
+    $.when(
+        fetchData('/panel/drivers?page=0&size=100'),
+        fetchData('/panel/attachable-delivery')
+    ).then(function(response1, response2) {
+
+
+        var data = response1[0];
+        var data2 = response2[0];
+
+        ob2 = data2;
+
+        var delies = '';
+        var userbox ='';
+
+
+        for(let i=0;i<data.length;i++) {
+            delies = ''
+            for (let j = 0; j < data2.length; j++) {
+
+                delies += `<div class="col">
+        <input class="margenesEspacio inputLargo" type="checkbox" id="del`+data[i].id+`-`+data2[j].id +`" name="del`+data[i].id+`-` + data2[j].id + `">
+<label for="del`+data[i].id+`-` + data2[j].id + `" class="form-check-label">` + data2[j].deliveryhash + `</label>
+    </div>`
+
+
+            }
+            if(data2.length==0){
+                delies='No Deliveries available to attach, please add more.'
+            }
+            userbox = ` <div class="list border-bottom">
+
+                    <i class="fa fa-user"></i>
+                    <div class="d-flex flex-column ml-3">
+<div class="col"><a class="btn" type="button" data-bs-toggle="modal" data-bs-target="#modal` + data[i].id + `">` + data[i].name + `</a>
+    <div id="modal` + data[i].id + `"class="modal fade centro" role="dialog" tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+    <h6 class="txtsGrises">Workplan for ` + data[i].name + `</h6>
+    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <div class="col padMar">
+        <div class="col">
+        <label for="startDate" class="form-label">Start Date</label>
+        <input class="margenesEspacio inputLargo" type="date" id="startDate` + data[i].id + `" name="startDate` + data[i].id + `">
+        </div>
+        <div class="col">
+        <label for="endDate" class="form-label">End Date</label>
+        <input class="margenesEspacio inputLargo" type="date" id="endDate` + data[i].id + `" name="endDate` + data[i].id + `">
+    </div>
+        <label for="deliveries" class="form-label">Delivery:</label>
+        ` + delies + `
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary btn-Oscuro" type="button" onclick="saveplan('` + data[i].id + `')">Save Plan</button>
+</div>
+            </div>
+        </div>
+    </div>
+</div>
+                    </div>
+                    <a class="position-sticky start-100" type="button" href="/workday?id=`+data[i].id+`" ><i class="fa fa-pencil position-sticky start-100"></i></a>
+                  </div>`
+
+            $('#userlist').append(userbox)
+        }
+
+
+    });
+
+
+
+    function saveplan(id){
+        var idArray = [];
+        for(let i=0;i<ob2.length;i++){
+            if($("#del"+id+"-"+ob2[i].id).is(':checked')){
+                idArray.push(ob2[i].id)
+            }
+        }
+        console.log(id)
+        console.log(ob2)
+        console.log(idArray)
+        var startDate = $('#startDate'+id)
+        var endDate = $('#endDate'+id)
+        console.log(startDate.val())
+        console.log(endDate.val())
+
+        $.post({
+            url: "/addnewplan/" + id,
+            data: JSON.stringify({
+                idArray: idArray,
+                startDate: startDate.val(),
+                endDate: endDate.val()
+            }),
+            headers: { "Content-Type": "application/json" },
+            success: function(data) {
+                console.log("Response from server:", data);
+                location.reload()
+            },
+            error: function(error) {
+                console.error("Error from server:", error);
+            }
+        });
+
+
+
+    }
+
+    function fetchData(url) {
+        return $.get(url);
+    }
+
+
+</script>
+</html>

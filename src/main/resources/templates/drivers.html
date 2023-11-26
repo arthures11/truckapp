@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Drivers management</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web:400,600,700">
+    <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/fonts/material-icons.min.css">
+    <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
+    <link rel="stylesheet" href="assets/css/Button-Change-Text-on-Hover.css">
+    <link rel="stylesheet" href="assets/css/Chat.css">
+    <link rel="stylesheet" href="assets/css/Color-Contact-List.css">
+    <link rel="stylesheet" href="assets/css/Contact-Form-v2-Modal--Full-with-Google-Map.css">
+    <link rel="stylesheet" href="assets/css/Custom-File-Upload.css">
+    <link rel="stylesheet" href="assets/css/Data-Table-styles.css">
+    <link rel="stylesheet" href="assets/css/Data-Table.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/css/theme.bootstrap_4.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+    <link rel="stylesheet" href="assets/css/info-box.css">
+    <link rel="stylesheet" href="assets/css/Ludens---1-Dark-mode-Index-Table-with-Search-Filters.css">
+    <link rel="stylesheet" href="assets/css/Multi-Select-Dropdown-by-Jigar-Mistry.css">
+    <link rel="stylesheet" href="assets/css/Navbar-With-Button-icons.css">
+    <link rel="stylesheet" href="assets/css/RULETTE.css">
+    <link rel="stylesheet" href="assets/css/Select2-JS-Plugin.css">
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background: var(--bs-dark);">
+            <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="chat">
+                    <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-truck-moving"></i></div>
+                    <div class="sidebar-brand-text mx-3"><span>trucky</span></div>
+                </a>
+                <hr class="sidebar-divider my-0">
+                <ul class="navbar-nav text-light" id="accordionSidebar">
+                    <li class="nav-item">
+                        <a class="nav-link" href="profile"><i class="fas fa-user"></i><span>Profile</span></a>
+                        <div th:if="${#authorization.expression('hasAnyRole(''ADMIN'', ''MANAGER'')')}">
+                            <a class="nav-link active" href="drivers"><i class="fas fa-users"></i><span>Drivers</span></a>
+                            <a class="nav-link" href="trucks"><i class="fas fa-shuttle-van"></i><span>Trucks</span></a>
+                            <a class="nav-link" href="delivery"><i class="fas fa-hands-helping"></i><span>Delivery</span></a>
+                            <a class="nav-link" href="schedule"><i class="material-icons">schedule</i><span>Schedule</span></a>
+                            <a class="nav-link" href="workdays"><i class="fas fa-paper-plane"></i><span>Workdays</span></a>
+                            <a class="nav-link" href="raports"><i class="fas fa-th-list"></i><span>Raports</span></a>
+                            <a class="nav-link" href="track"><i class="fab fa-earlybirds"></i><span>Tracking</span></a>
+                            <a class="nav-link" href="approve"><i class="far fa-save"></i><span>Approvals</span></a>
+                        </div>
+                        <a class="nav-link" href="chat"><i class="far fa-comments"></i><span>Chat</span></a>
+                    </li>
+
+                </ul>
+                <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
+            </div>
+        </nav>
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+                        <ul class="navbar-nav flex-nowrap ms-auto">
+                            <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fas fa-search"></i></a>
+                                <div class="dropdown-menu dropdown-menu-end p-3 animated--grow-in" aria-labelledby="searchDropdown">
+                                    <form class="me-auto navbar-search w-100">
+                                        <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
+                                            <div class="input-group-append"><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </li>
+                            <div th:if="${#authorization.expression('hasAnyRole(''ADMIN'', ''MANAGER'')')}">
+                                <li class="authenticated nav-item dropdown no-arrow mx-1" style="display:none">
+                                    <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span id="alertamount" class="badge bg-danger badge-counter">3+</span><i class="fas fa-bell fa-fw"></i></a>
+                                        <div style="height: 650px; overflow: auto;" id="notifikacje" class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
+                                            <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item text-center small text-gray-500" onclick="deleteAlerts()" href="#">delete all notifs</a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </div>
+                            <li class="nav-item dropdown no-arrow mx-1">
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"></a>
+                                    <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
+                                        <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
+                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar4.jpeg">
+                                                <div class="bg-success status-indicator"></div>
+                                            </div>
+                                            <div class="fw-bold">
+                                                <div class="text-truncate"><span>Hi there! I am wondering if you can help me with a problem I've been having.</span></div>
+                                                <p class="small text-gray-500 mb-0">Emily Fowler - 58m</p>
+                                            </div>
+                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
+                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar2.jpeg">
+                                                <div class="status-indicator"></div>
+                                            </div>
+                                            <div class="fw-bold">
+                                                <div class="text-truncate"><span>I have the photos that you ordered last month!</span></div>
+                                                <p class="small text-gray-500 mb-0">Jae Chun - 1d</p>
+                                            </div>
+                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
+                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar3.jpeg">
+                                                <div class="bg-warning status-indicator"></div>
+                                            </div>
+                                            <div class="fw-bold">
+                                                <div class="text-truncate"><span>Last month's report looks great, I am very happy with the progress so far, keep up the good work!</span></div>
+                                                <p class="small text-gray-500 mb-0">Morgan Alvarez - 2d</p>
+                                            </div>
+                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
+                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar5.jpeg">
+                                                <div class="bg-success status-indicator"></div>
+                                            </div>
+                                            <div class="fw-bold">
+                                                <div class="text-truncate"><span>Am I a good boy? The reason I ask is because someone told me that people say this to all dogs, even if they aren't good...</span></div>
+                                                <p class="small text-gray-500 mb-0">Chicken the Dog · 2w</p>
+                                            </div>
+                                        </a><a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                    </div>
+                                </div>
+                                <div class="shadow dropdown-list dropdown-menu dropdown-menu-end" aria-labelledby="alertsDropdown"></div>
+                            </li>
+                            <div class="d-none d-sm-block topbar-divider"></div>
+                            <li class="nav-item dropdown no-arrow">
+                                <div class="container"><div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span id="user" class="d-none d-lg-inline me-2 text-gray-600 small"></span><img id="avatar" class="border rounded-circle img-profile" src="assets/img/avatars/avatar1.jpeg"></a>
+                                    <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
+                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+                                    </div>
+                                </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                <div class="container-fluid">
+                    <h3 class="text-dark mb-1">Manager panel</h3>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col"><nav class="navbar navbar-light navbar-expand-md py-3">
+    <div class="container"><button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+        <div id="navcol-1" class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link active" href="#">Drivers <i class="fa fa-user"></i></a></li>
+                    <hr>
+
+                            <path fill-rule="evenodd" d="M0 10.5A1.5 1.5 0 0 1 1.5 9h1A1.5 1.5 0 0 1 4 10.5v1A1.5 1.5 0 0 1 2.5 13h-1A1.5 1.5 0 0 1 0 11.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm10.5.5A1.5 1.5 0 0 1 13.5 9h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zM6 4.5A1.5 1.5 0 0 1 7.5 3h1A1.5 1.5 0 0 1 10 4.5v1A1.5 1.5 0 0 1 8.5 7h-1A1.5 1.5 0 0 1 6 5.5v-1zM7.5 4a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z"></path>
+                            <path d="M6 4.5H1.866a1 1 0 1 0 0 1h2.668A6.517 6.517 0 0 0 1.814 9H2.5c.123 0 .244.015.358.043a5.517 5.517 0 0 1 3.185-3.185A1.503 1.503 0 0 1 6 5.5v-1zm3.957 1.358A1.5 1.5 0 0 0 10 5.5v-1h4.134a1 1 0 1 1 0 1h-2.668a6.517 6.517 0 0 1 2.72 3.5H13.5c-.123 0-.243.015-.358.043a5.517 5.517 0 0 0-3.185-3.185z"></path>
+                        </svg></a></li>
+                
+            </ul>
+        </div>
+    </div>
+</nav></div>
+                        </div>
+
+
+    <div class="container">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-6">
+						<h2>Drivers <b>manager</b></h2>
+					</div>
+					<div class="col-sm-6">
+						<a onclick="adduser()" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add driver</span></a>
+					</div>
+                </div>
+            </div>
+            <table id="userTable" class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>
+							<span class="custom-checkbox">
+								<input type="checkbox" id="selectAll">
+								<label for="selectAll"></label>
+							</span>
+                    </th>
+                    <th>id</th>
+                    <th>name</th>
+                    <th>email</th>
+                    <th>truck</th>
+                    <th>role</th>
+                    <th>actions</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+			<div class="clearfix">
+                <div class="hint-text">Showing <b id="manystart"></b> out of <b id="howmany"></b> entries</div>
+                <ul class="pagination">
+                    <li class="page-item active" data-page="0"><a href="#" class="page-link">1</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+	<!-- Edit Modal HTML -->
+	<div id="addEmployeeModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">						
+						<h4 class="modal-title">Add Employee</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body">					
+						<div class="form-group">
+							<label>Name</label>
+							<input type="text" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label>Email</label>
+							<input type="email" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label>Address</label>
+							<textarea class="form-control" required></textarea>
+						</div>
+						<div class="form-group">
+							<label>Phone</label>
+							<input type="text" class="form-control" required>
+						</div>					
+					</div>
+					<div class="modal-footer">
+						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+						<input type="submit" class="btn btn-success" value="Add">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- Edit Modal HTML -->
+	<div id="editEmployeeModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">						
+						<h4 class="modal-title">Edit Employee</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body">					
+						<div class="form-group">
+							<label>Name</label>
+							<input type="text" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label>Email</label>
+							<input type="email" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label>Address</label>
+							<textarea class="form-control" required></textarea>
+						</div>
+						<div class="form-group">
+							<label>Phone</label>
+							<input type="text" class="form-control" required>
+						</div>					
+					</div>
+					<div class="modal-footer">
+						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+						<input type="submit" class="btn btn-info" value="Save">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- Delete Modal HTML -->
+	<div id="deleteEmployeeModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">						
+						<h4 class="modal-title">Delete Employee</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body">					
+						<p>Are you sure you want to delete these Records?</p>
+						<p class="text-warning"><small>This action cannot be undone.</small></p>
+					</div>
+					<div class="modal-footer">
+						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+						<input type="submit" class="btn btn-danger" value="Delete">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+                    </div>
+                </div>
+            </div>
+            <footer class="bg-white sticky-footer">
+                <div class="container my-auto">
+                    <div class="text-center my-auto copyright"><span>Copyright © Bryja 2023</span></div>
+                </div>
+            </footer>
+        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+    </div>
+
+    <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">add new driver by yourself</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div>
+                    <form id="addForm" method="post">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="name">name:</label>
+                                <input type="text" class="form-control" id="newUserName" name="newUserName">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">mail:</label>
+                                <input type="email" class="form-control" id="newUserEmail" name="newUserEmail">
+                            </div>
+                            <div class="form-group">
+                                <label for="balance">password:</label>
+                                <input type="password" class="form-control" id="newUserPassword" name="newUserPassword">
+                            </div>
+                            <div class="form-group">
+                                <label for="balance">repeat:</label>
+                                <input type="password" class="form-control" id="newUserPasswordRepeat" name="newUserPasswordRepeat">
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="addNewUser()">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="assets/js/Select2-JS-Plugin-1.js"></script>
+    <script src="assets/js/Select2-JS-Plugin.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/jquery.tablesorter.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-filter.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.2/js/widgets/widget-storage.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="assets/js/theme.js"></script>
+    <script src="assets/js/userdetails.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+</body>
+
+
+
+
+<script>
+
+
+
+
+    var trucks_to_assign ='';
+
+
+
+    $(document).ready(function() {
+        $.get("/trucks-assign", function(data) {
+            for(let i=0;i<data.length;i++){
+                trucks_to_assign+=`<option value="`+data[i].id+`">`+data[i].name+`</option>
+`
+            }
+        });
+
+        $.get("/panel/drivers?page=0&size=5", function(data) {
+            var how_many_pages  = data[0].totalPages-1
+            for(let i=0;i<how_many_pages;i++){
+                var toappend =`<li class="page-item" data-page="`+(i+1)+`"><a href="#" class="page-link">`+(i+2)+`</a></li>`
+                $('.pagination').append(toappend)
+            }
+            $('#howmany').text(data[0].totalElements)
+            $('#manystart').text(data.length)
+            var bonuses = data;
+
+            var tbody = $("table tbody");
+            var body = $("body");
+            bonuses.forEach(function(bonus) {
+                var a =''
+                if(bonus.trucks!=null){
+                    a=fix(bonus.trucks.name)
+                }
+                var tr = `<tr><td><span class="custom-checkbox"><input type="checkbox" id="checkbox1" name="options[]" value="1"><label for="checkbox1">
+                    </label></span></td><td>`+bonus.id+`</td><td>`+bonus.name+`</td><td>`+bonus.email+`</td><td>`+a+`<a href="" onclick="removeTruck('`+bonus.id+`')" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete"></i></a></td><td>`+bonus.roleNames[0]+`</td><td><a
+                    onclick="openEditModal('`+bonus.id+`', '`+bonus.name+`', '`+bonus.email+`', '`+a+`', '`+bonus.roleNames[0]+`')" class="edit"><i class="material-icons" data-toggle="tooltip" title="Edit"></i></a>
+                    <a href="" onclick="remove('`+bonus.id+`')" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete"></i></a></td></tr>`;
+
+                var ab =  `                        <div class="modal fade" id="editModal`+bonus.id+`" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editModalLabel">edition or truck's assignation</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div>
+                                    <form id="editForm" method="post">
+                                    <div class="modal-body">
+                                            <div class="form-group">
+                                                <label for="name">Name</label>
+                                                <input type="text" class="form-control" id="name`+bonus.id+`" name="name`+bonus.id+`">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email">Email</label>
+                                                <input type="email" class="form-control" id="email`+bonus.id+`" name="email`+bonus.id+`">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="truck">Truck</label>
+                                                <select class="form-control" id="truck`+bonus.id+`" name="truck`+bonus.id+`">
+                                                `+trucks_to_assign+`
+                                                </select>
+                                            </div>
+                                          <div class="form-group">
+                                                <label for="role">Role</label>
+                                                <select class="form-control" id="role`+bonus.id+`" name="role`+bonus.id+`">
+                                                    <option value="ROLE_DRIVER">ROLE_DRIVER</option>
+    						                        <option value="ROLE_MANAGER">ROLE_MANAGER</option>
+   						                            <option value="ROLE_ADMIN">ROLE_ADMIN</option>
+                                                </select>
+                                            </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary" onclick="submitForm(`+bonus.id+`)">Save changes</button>
+                                      </form>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`
+                tbody.append(tr);
+                body.append(ab);
+            });
+        });
+    });
+
+    function openEditModal(id, name, email, tru, role) {
+        $('#editModal'+id).modal('show');
+        $('#editModal'+id+' input[name="id'+id+'"]').val(id);
+        $('#editModal'+id+' input[name="name'+id+'"]').val(name);
+        $('#editModal'+id+' input[name="email'+id+'"]').val(email);
+        $('#editModal'+id+' input[name="truck'+id+'"]').val(tru);
+        $('#editModal'+id+' input[name="role'+id+'"]').val(role);
+    }
+
+    function fix(inputString) {
+        return inputString
+            .replace(/\\/g, '&#92;')  // Replace backslash
+            .replace(/\n/g, '&#92;n')  // Replace newline
+            .replace(/\r/g, '&#92;r')  // Replace carriage return
+            .replace(/\t/g, '&#92;t')  // Replace tab
+            .replace(/"/g, '&#34;')   // Replace double quote
+            .replace(/'/g, '&#39;');   // Replace single quote
+    }
+
+
+
+    function addNewUser(){
+
+        $.post({
+            url: "/user/rawadd?passwordrepeat="+$("#newUserPasswordRepeat").val(),
+            data: JSON.stringify({
+                name: $("#newUserName").val(),
+                email: $("#newUserEmail").val(),
+                password: $("#newUserPassword").val(),
+            }),
+            headers: { "Content-Type": "application/json" },
+            success: function(data) {
+                console.log("Response from server:", data);
+                location.reload()
+            },
+            error: function(error) {
+                console.error("Error from server:", error);
+            }
+        });
+
+    }
+
+    function adduser(){
+        $('#addUserModal').modal('show');
+    }
+
+
+    function remove(id){
+        $.ajax({
+            url: "/user/delete/" + id,
+            type: "DELETE",
+            success: function() {
+                console.log("User deleted successfully");
+                location.reload()
+            },
+            error: function() {
+                console.log("Error deleting user");
+            }
+        });
+    }
+
+    function removeTruck(id){
+        $.ajax({
+            url: "/user/design/" + id,
+            type: "DELETE",
+            success: function() {
+                console.log("User deleted successfully");
+                location.reload()
+            },
+            error: function() {
+                console.log("Error deleting user");
+            }
+        });
+    }
+
+    function submitForm(id) {
+
+        $.post({
+            url: "/users/" + id,
+            data: JSON.stringify({
+                name: $("#name"+id).val(),
+                email: $("#email"+id).val(),
+                truck: $("#truck"+id).val(),
+                chip: $("#role"+id).val(),
+            }),
+            headers: { "Content-Type": "application/json" },
+            success: function(data) {
+                console.log("Response from server:", data);
+                location.reload()
+            },
+            error: function(error) {
+                console.error("Error from server:", error);
+            }
+        });
+
+    }
+
+</script>
+
+
+<script>
+    $('.pagination').on('click', '.page-item', function (event) {
+        event.preventDefault();
+
+        const pageNumber = $(this).data('page');
+        $('.page-item').removeClass('active');
+
+        if($(this).text().includes("Next")){
+
+        }
+        else if($(this).text().includes("Previous")){
+
+        }
+        else{
+
+            $(this).addClass('active');
+        }
+
+            $.get("/trucks-assign", function(data) {
+                trucks_to_assign =''
+                for(let i=0;i<data.length;i++){
+                    trucks_to_assign+=`<option value="`+data[i].id+`">`+data[i].name+`</option>
+`
+                }
+            });
+
+            $.get("/panel/drivers?page="+pageNumber+"&size=5", function(data) {
+                $('#howmany').text(data[0].totalElements)
+                $('#manystart').text(data.length)
+                var bonuses = data;
+
+                var tbody = $("table tbody");
+                var body = $("body");
+                tbody.empty();
+                bonuses.forEach(function(bonus) {
+                    var a =''
+                    if(bonus.trucks!=null){
+                        a=fix(bonus.trucks.name)
+                    }
+                    var tr = `<tr><td><span class="custom-checkbox"><input type="checkbox" id="checkbox1" name="options[]" value="1"><label for="checkbox1">
+                    </label></span></td><td>`+bonus.id+`</td><td>`+bonus.name+`</td><td>`+bonus.email+`</td><td>`+a+`<a href="" onclick="removeTruck('`+bonus.id+`')" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete"></i></a></td><td>`+bonus.roleNames[0]+`</td><td><a
+                    onclick="openEditModal('`+bonus.id+`', '`+bonus.name+`', '`+bonus.email+`', '`+a+`', '`+bonus.roleNames[0]+`')" class="edit"><i class="material-icons" data-toggle="tooltip" title="Edit"></i></a>
+                    <a href="" onclick="remove('`+bonus.id+`')" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete"></i></a></td></tr>`;
+
+                    var ab =  `                        <div class="modal fade" id="editModal`+bonus.id+`" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editModalLabel">edition or truck's assignation</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div>
+                                    <form id="editForm" method="post">
+                                    <div class="modal-body">
+                                            <div class="form-group">
+                                                <label for="name">Name</label>
+                                                <input type="text" class="form-control" id="name`+bonus.id+`" name="name`+bonus.id+`">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email">Email</label>
+                                                <input type="email" class="form-control" id="email`+bonus.id+`" name="email`+bonus.id+`">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="truck">Truck</label>
+                                                <select class="form-control" id="truck`+bonus.id+`" name="truck`+bonus.id+`">
+                                                `+trucks_to_assign+`
+                                                </select>
+                                            </div>
+                                          <div class="form-group">
+                                                <label for="role">Role</label>
+                                                <select class="form-control" id="role`+bonus.id+`" name="role`+bonus.id+`">
+                                                    <option value="ROLE_DRIVER">ROLE_DRIVER</option>
+    						                        <option value="ROLE_MANAGER">ROLE_MANAGER</option>
+   						                            <option value="ROLE_ADMIN">ROLE_ADMIN</option>
+                                                </select>
+                                            </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary" onclick="submitForm(`+bonus.id+`)">Save changes</button>
+                                      </form>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`
+                    tbody.append(tr);
+                    body.append(ab);
+                });
+            });
+            });
+</script>
+</html>
