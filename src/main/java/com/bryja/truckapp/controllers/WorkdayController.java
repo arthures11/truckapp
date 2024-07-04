@@ -232,17 +232,13 @@ public class WorkdayController {
     @Transactional
     @GetMapping(value="/workday/calendar", consumes = {"*/*"})
     public CalendarDTO calendarData(Authentication authentication) {
-        CalendarDTO f = new CalendarDTO();
+        CalendarDTO f = new CalendarDTO(); //inicjacja obiektu DTO, którym na samym końcu zostanie zwrócony
         User usr = repository.findByEmail(checkmail(authentication.getPrincipal()));
 
-
-        Date now = new Date();
-
         YearMonth yearMonth = YearMonth.now();
+
         int daysInMonth = yearMonth.lengthOfMonth();
-
         List<Workday> ws = new ArrayList<>();
-
         Date temp = new Date();
         outerloop: for(int i=1;i<=daysInMonth;i++){
             Calendar calendar = Calendar.getInstance();
@@ -257,12 +253,9 @@ public class WorkdayController {
                 }
             }
             ws.add(new Workday());
-
         }
         f.setWs(ws);
         return f;
-
-
     }
 
     @Transactional
